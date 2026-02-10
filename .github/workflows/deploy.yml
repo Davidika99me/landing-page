@@ -26,10 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # --------------------------
-      # PARTE 2 – Esteira Tripla
-      # --------------------------
-
+      # Parte 2 – Validações
       - name: Verificar se a pasta src existe
         run: test -d src || (echo "❌ ERRO: pasta src não encontrada!" && exit 1)
 
@@ -41,8 +38,6 @@ jobs:
         with:
           target_pattern: 'src/index.html'
 
-      # --------------------------
-
       - name: Explorando o Runner
         run: lsb_release -a && free -h
 
@@ -52,14 +47,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: 'src'   # ← agora enviamos apenas o conteúdo válido
+          path: 'src'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      # --------------------------
-      # PARTE 4 – Relatório Final
-      # --------------------------
       - name: Auditoria Final
         run: echo "O código do aluno DAVID foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
