@@ -45,9 +45,9 @@ jobs:
 
       # 4. Linting Profissional – HTMLHint
       - name: Linting Profissional - HTMLHint
-        uses: kabirbaidhya/htmlhint-github-action@v1.0.4
+        uses: htmlhint/action-htmlhint@v1
         with:
-          htmlhint_args: "src/index.html"
+        files: "src/index.html"
 
       # (Opcional) Apenas explorando o runner
       - name: Explorando o Runner
