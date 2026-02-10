@@ -26,9 +26,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # --------------------------
+      # PARTE 2 – Esteira Tripla
+      # --------------------------
+
+      - name: Verificar se a pasta src existe
+        run: test -d src || (echo "❌ ERRO: pasta src não encontrada!" && exit 1)
+
+      - name: Verificar se o CSS está no caminho correto
+        run: test -f src/css/style.css || (echo "❌ ERRO: CSS não encontrado em src/css/style.css" && exit 1)
+
+      - name: Linting Profissional - HTMLHint
+        uses: Cyb3r-Jak3/htmlhint-action@v1.1.0
+        with:
+          target_pattern: 'src/index.html'
+
+      # --------------------------
+
       - name: Explorando o Runner
         run: lsb_release -a && free -h
-     
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -36,8 +52,14 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: '.'  
+          path: 'src'   # ← agora enviamos apenas o conteúdo válido
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # --------------------------
+      # PARTE 4 – Relatório Final
+      # --------------------------
+      - name: Auditoria Final
+        run: echo "O código do aluno DAVID foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
