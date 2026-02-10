@@ -23,11 +23,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Verificar pasta src
       - name: Verificar se a pasta src existe
         run: |
           if [ ! -d src ]; then
@@ -35,7 +33,6 @@ jobs:
             exit 1
           fi
 
-      # 3. Verificar CSS no novo caminho
       - name: Verificar se o CSS está no caminho correto
         run: |
           if [ ! -f src/css/style.css ]; then
@@ -43,31 +40,32 @@ jobs:
             exit 1
           fi
 
-      # 4. Linting Profissional – HTMLHint
-      - name: Linting Profissional - HTMLHint
-        uses: htmlhint/action-htmlhint@v1
+      # ————— HTMLHint —————
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-        files: "src/index.html"
+          node-version: "18"
 
-      # (Opcional) Apenas explorando o runner
+      - name: Install HTMLHint
+        run: npm install -g htmlhint
+
+      - name: Lint HTML
+        run: htmlhint "src/index.html"
+
       - name: Explorando o Runner
         run: lsb_release -a && free -h
 
-      # 5. Setup Pages
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # 6. Upload da pasta src como artefato
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: 'src'
 
-      # 7. Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      # 8. Auditoria Final
       - name: Auditoria Final
         run: echo "O código do aluno DAVID foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
