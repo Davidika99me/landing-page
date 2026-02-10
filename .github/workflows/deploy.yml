@@ -28,10 +28,18 @@ jobs:
 
       # Parte 2 – Validações
       - name: Verificar se a pasta src existe
-        run: test -d src || (echo " ERRO: pasta src não encontrada!" && exit 1)
+        run: |
+          if [ ! -d src ]; then
+            echo "ERRO: pasta src nao encontrada!"
+            exit 1
+          fi
 
       - name: Verificar se o CSS está no caminho correto
-        run: test -f src/css/style.css || (echo " ERRO: CSS não encontrado em src/css/style.css" && exit 1)
+        run: |
+          if [ ! -f src/css/style.css ]; then
+            echo "ERRO: arquivo src/css/style.css nao encontrado!"
+            exit 1
+          fi
 
       - name: Linting Profissional - HTMLHint
         uses: Cyb3r-Jak3/htmlhint-action@v1.1.0
