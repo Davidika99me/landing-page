@@ -23,10 +23,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Parte 2 – Validações
+      # 2. Verificar pasta src
       - name: Verificar se a pasta src existe
         run: |
           if [ ! -d src ]; then
@@ -34,6 +35,7 @@ jobs:
             exit 1
           fi
 
+      # 3. Verificar CSS no novo caminho
       - name: Verificar se o CSS está no caminho correto
         run: |
           if [ ! -f src/css/style.css ]; then
@@ -41,25 +43,31 @@ jobs:
             exit 1
           fi
 
+      # 4. Linting Profissional – HTMLHint
       - name: Linting Profissional - HTMLHint
         uses: kabirbaidhya/htmlhint-github-action@v1.0.4
         with:
           htmlhint_args: "src/index.html"
 
+      # (Opcional) Apenas explorando o runner
       - name: Explorando o Runner
         run: lsb_release -a && free -h
 
+      # 5. Setup Pages
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      # 6. Upload da pasta src como artefato
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: 'src'
 
+      # 7. Deploy para o GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
+      # 8. Auditoria Final
       - name: Auditoria Final
         run: echo "O código do aluno DAVID foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
