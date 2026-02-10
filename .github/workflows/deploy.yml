@@ -40,6 +40,12 @@ jobs:
             exit 1
           fi
 
+      - name: Verificar se existe footer com o nome do aluno
+        run: |
+          if ! grep -qi "<footer>.*david.*</footer>" src/index.html; then
+          echo "ERRO: O arquivo src/index.html não contém um <footer> com o nome do aluno!"
+          exit 1
+          fi
       # ————— HTMLHint —————
       - name: Setup Node.js
         uses: actions/setup-node@v3
