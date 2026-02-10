@@ -42,9 +42,9 @@ jobs:
           fi
 
       - name: Linting Profissional - HTMLHint
-        uses: Cyb3r-Jak3/htmlhint-action@v1.1.0
+        uses: kabirbaidhya/htmlhint-github-action@v1.0.4
         with:
-          target_pattern: 'src/index.html'
+          htmlhint_args: "src/index.html"
 
       - name: Explorando o Runner
         run: lsb_release -a && free -h
