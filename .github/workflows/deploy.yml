@@ -11,67 +11,65 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
   deploy:
+    runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Verificar se a pasta src existe
+      - name: Preparando Versão de Produção
         run: |
-          if [ ! -d src ]; then
-            echo "ERRO: pasta src nao encontrada!"
-            exit 1
-          fi
+          echo " Iniciando pipeline de preparação..."
 
-      - name: Verificar se o CSS está no caminho correto
-        run: |
+          echo " Verificando estrutura"
+          test -d src || (echo " ERRO: pasta src não encontrada!" && exit 1)
+          test -f src/index.html || (echo " ERRO: arquivo src/index.html não encontrado!" && exit 1)
+
           if [ ! -f src/css/style.css ]; then
-            echo "ERRO: arquivo src/css/style.css nao encontrado!"
+            echo " ERRO: arquivo src/css/style.css não encontrado!"
             exit 1
           fi
 
-      - name: Verificar se existe footer com o nome do aluno
-        run: |
+          echo " Verificando footer com nome do aluno..."
           if ! grep -qi "<footer>.*david.*</footer>" src/index.html; then
-          echo "ERRO: O arquivo src/index.html não contém um <footer> com o nome do aluno!"
-          exit 1
+            echo " ERRO: O HTML deve conter um <footer> com o nome do aluno!"
+            exit 1
           fi
-      # ————— HTMLHint —————
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
 
-      - name: Install HTMLHint
-        run: npm install -g htmlhint
+          echo "🔍 Instalando HTMLHint"
+          npm install -g htmlhint
 
-      - name: Lint HTML
-        run: htmlhint "src/index.html"
+          echo "🔎 Rodando HTMLHint"
+          htmlhint src/index.html
 
-      - name: Explorando o Runner
-        run: lsb_release -a && free -h
+          echo " Gerando pasta dist/"
+          mkdir -p dist
+          cp src/index.html dist/
+          cp -R src/css dist/ 2>/dev/null || echo " Aviso: pasta css não encontrada"
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+          echo "Conteúdo final da pasta dist/"
+          ls -R dist
+
+          echo "Pasta de produção gerada com sucesso!"
+
+      - uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: 'src'
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
       - name: Auditoria Final
-        run: echo "O código do aluno DAVID foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
+        run: echo "🔎 Auditoria concluída: o código do aluno DAVID está pronto para o deploy!"
