@@ -72,7 +72,7 @@ jobs:
           echo " Iniciando Auditoria de Qualidade..."
 
           test -f dist/index.html || (echo " ERRO: index.html NÃO encontrado na pasta dist!" && exit 1)
-          test -f dist/sobre.html || (echo " ERRO: sobre.html NÃO encontrado na pasta dist!" && exit 1)
+          test -f dist/quem-somos.html || (echo " ERRO: quem-somos.html NÃO encontrado na pasta dist!" && exit 1)
           test -f dist/contato.html || (echo " ERRO: contato.html NÃO encontrado na pasta dist!" && exit 1)
 
           echo " Auditoria de Qualidade concluída: todos os arquivos estão OK!"
