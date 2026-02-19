@@ -44,21 +44,38 @@ jobs:
             exit 1
           fi
 
-          echo "🔍 Instalando HTMLHint"
+          echo " Instalando HTMLHint"
           npm install -g htmlhint
 
-          echo "🔎 Rodando HTMLHint"
+          echo " Rodando HTMLHint"
           htmlhint src/index.html
 
-          echo " Gerando pasta dist/"
-          mkdir -p dist
-          cp src/index.html dist/
-          cp -R src/css dist/ 2>/dev/null || echo " Aviso: pasta css não encontrada"
+          echo " Limpando pasta dist antiga..."
+          rm -rf dist
 
-          echo "Conteúdo final da pasta dist/"
+          echo " Criando nova pasta dist..."
+          mkdir dist
+
+          echo " Copiando arquivos HTML..."
+          cp src/*.html dist/
+
+          echo " Copiando assets..."
+          cp -R src/assets dist/ 2>/dev/null || echo " Aviso: pasta assets não encontrada!"
+
+          echo " Conteúdo final da pasta dist/"
           ls -R dist
 
-          echo "Pasta de produção gerada com sucesso!"
+          echo " Pasta de produção gerada com sucesso!"
+
+      - name: Auditoria de Qualidade (PARTE 3)
+        run: |
+          echo " Iniciando Auditoria de Qualidade..."
+
+          test -f dist/index.html || (echo " ERRO: index.html NÃO encontrado na pasta dist!" && exit 1)
+          test -f dist/sobre.html || (echo " ERRO: sobre.html NÃO encontrado na pasta dist!" && exit 1)
+          test -f dist/contato.html || (echo " ERRO: contato.html NÃO encontrado na pasta dist!" && exit 1)
+
+          echo " Auditoria de Qualidade concluída: todos os arquivos estão OK!"
 
       - uses: actions/configure-pages@v5
 
@@ -72,4 +89,4 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Auditoria Final
-        run: echo " Auditoria concluída o código do aluno DAVID está pronto para o deploy!"
+        run: echo " Auditoria final concluída deploy liberado!"
