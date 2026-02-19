@@ -72,4 +72,4 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Auditoria Final
-        run: echo "🔎 Auditoria concluída: o código do aluno DAVID está pronto para o deploy!"
+        run: echo " Auditoria concluída o código do aluno DAVID está pronto para o deploy!"
