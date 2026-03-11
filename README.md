@@ -1,5 +1,5 @@
 # 📱 MobileDev - Landing Page de Serviços Mobile
-**Desenvolvido por David Moreto**
+**Desenvolvido por David Moreto**.
 
 Uma aplicação Full Stack moderna e de alta conversão para agências de desenvolvimento. O projeto utiliza um **Tema Dark** sofisticado com acentos em azul neon, integrando uma interface elegante a um sistema de captura de leads persistente.
 
